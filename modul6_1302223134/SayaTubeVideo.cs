@@ -1,4 +1,6 @@
-﻿namespace modul6_1302223134;
+﻿using System.Diagnostics;
+
+namespace modul6_1302223134;
 
 internal class SayaTubeVideo
 {
@@ -11,6 +13,9 @@ internal class SayaTubeVideo
 
     public SayaTubeVideo(String title)
     {
+        Debug.Assert(title != null, "Judul video tidak boleh kosong");
+        Debug.Assert(title.Length <= 200, "Judul video max 200 karakter");
+
         id = new Random().Next(10000,99999);
         this.title = title;
         playCount = 0;
@@ -18,7 +23,18 @@ internal class SayaTubeVideo
 
     public void IncreasePlayCount(int playCount)
     {
-        this.playCount = playCount;
+        Debug.Assert(playCount <= 25000000, "Penambahan play count max 25.000.000 per panggilan");
+        Debug.Assert(playCount >= 0, "Nilai play count tidak boleh negatif");
+
+        try
+        {
+            int newPlayCount = checked(this.playCount + playCount);
+            this.playCount = newPlayCount;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
     }
 
     public void PrintVideoDetails()
